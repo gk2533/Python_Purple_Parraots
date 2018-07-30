@@ -1,2 +1,2 @@
 # hackathon repo!
-simple flask nlp app
+simple flask app
