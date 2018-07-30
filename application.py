@@ -17,7 +17,7 @@ class HelloWorld(Resource):            # Create a RESTful resource
 
 def main():
     application.debug = True
-    application.run()
+    application.run() 
 
 
 if __name__ == "__main__":
