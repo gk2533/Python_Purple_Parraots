@@ -20,6 +20,10 @@ class Elephant(Resource):
     def get(self):
         return {'elephant': 'olivia'}
 
+@api.route("/yodafy")
+class Yoda(Resource):
+    def get(self):
+        return {'yodafy': 'purple parrots'}
 
 def main():
     application.debug = True
