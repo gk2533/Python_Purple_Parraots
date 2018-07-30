@@ -15,6 +15,12 @@ class HelloWorld(Resource):            # Create a RESTful resource
         return {'hello': 'world'}
 
 
+@api.route("/elephant")
+class Elephant(Resource):
+    def get(self):
+        return {'elephant': 'olivia'}
+
+
 def main():
     application.debug = True
     application.run()
