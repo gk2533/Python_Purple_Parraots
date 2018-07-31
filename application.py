@@ -25,6 +25,14 @@ message_id = api.model('message_id', {
 })
 
 
+def num():
+    num.counter +=1
+    return num.counter
+
+
+num.counter = 0
+
+
 '''
 Rumor object model (Rumor <-> rumor) 
 ignore warning as props will resolve at runtime
