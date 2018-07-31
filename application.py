@@ -1,4 +1,4 @@
-import uuid
+# import uuid
 from flask import Flask, request, jsonify
 from flask_restplus import Resource, Api
 from flask_restplus import fields
@@ -13,15 +13,15 @@ db = SQLAlchemy(application)
 '''
 json marshaller (object <-> json)
 '''
-rumor = api.model('rumor', {
-    'name': fields.String(required=True, description='rumor title'),
-    'content': fields.String(required=True, description='rumor content'),
+message = api.model('message', {
+    'name': fields.String(required=True, description='message title'),
+    'content': fields.String(required=True, description='message content'),
 })
 
-rumor_id = api.model('rumor_id', {
-    'id': fields.String(readOnly=True, description='unique identifier of a rumor'),
-    'name': fields.String(required=True, description='rumor name'),
-    'content': fields.String(required=True, description='rumor content'),
+message_id = api.model('message_id', {
+    'id': fields.String(readOnly=True, description='unique identifier of a message'),
+    'name': fields.String(required=True, description='message name'),
+    'content': fields.String(required=True, description='message content'),
 })
 
 
@@ -31,23 +31,24 @@ ignore warning as props will resolve at runtime
 '''
 
 
-class Rumor(db.Model):
+class Message(db.Model):
     id = db.Column(db.Text(80), primary_key=True)
     name = db.Column(db.String(80), unique=False, nullable=False)
     content = db.Column(db.String(120), unique=True, nullable=False)
 
     def __repr__(self):
-        return '<Rumor %r>' % self.content
+        return '<Message %r>' % self.content
 
 
-def create_rumor(data):
-    id = str(uuid.uuid4())
+def create_message(data):
+    # id = str(uuid.uuid4())
+    # static variable, not a uuid
     name = data.get('name')
     content = data.get('content')
-    rumor = Rumor(id=id, name=name, content=content)
-    db.session.add(rumor)
+    message = Message(id=id, name=name, content=content)
+    db.session.add(message)
     db.session.commit()
-    return rumor
+    return message
 
 
 '''
@@ -55,27 +56,27 @@ API controllers
 '''
 
 
-@api.route("/rumor")
-class RumorRoute(Resource):
+@api.route("/message")
+class MessageRoute(Resource):
     def get(self):
         return {'brandon': 'listens to selena gomez'}
 
     # @api.response(201, 'Rumor successfully created.')
-    @api.expect(rumor)
-    @api.marshal_with(rumor_id)
+    @api.expect(message)
+    @api.marshal_with(message_id)
     def post(self):
-        new_rumor = create_rumor(request.json)
-        return Rumor.query.filter(Rumor.id == new_rumor.id).one()
+        new_message = create_message(request.json)
+        return Message.query.filter(Message.id == new_message.id).one()
 
 
 # id is a url-encoded variable
-@api.route("/rumor/<string:id>")
-class RumorIdRoute(Resource):
-    @api.marshal_with(rumor_id)
+@api.route("/message/<string:id>")
+class MessageIdRoute(Resource):
+    @api.marshal_with(message_id)
     # id becomes a method param in this GET
     def get(self, id):
         # use sqlalchemy to get a rumor by ID
-        return Rumor.query.filter(Rumor.id == id).one()
+        return Message.query.filter(Message.id == id).one()
 
 
 '''
