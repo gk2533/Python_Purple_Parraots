@@ -14,24 +14,30 @@ db = SQLAlchemy(application)
 json marshaller (object <-> json)
 '''
 message = api.model('message', {
-    'name': fields.String(required=True, description='message title'),
+    # 'name': fields.String(required=True, description='message title'),
     'content': fields.String(required=True, description='message content'),
 })
 
+'''
 message_id = api.model('message_id', {
     'id': fields.String(readOnly=True, description='unique identifier of a message'),
-    'name': fields.String(required=True, description='message name'),
+    # 'name': fields.String(required=True, description='message name'),
     'content': fields.String(required=True, description='message content'),
 })
+'''
 
 
-def num():
-    num.counter +=1
+'''def num(bool):
+    i = 0
+    if bool:
+        num.counter += 1
+    if not bool:
+        i += 1
     return num.counter
 
 
-num.counter = 0
-
+num.counter = 1
+'''
 
 '''
 Rumor object model (Rumor <-> rumor) 
@@ -41,22 +47,34 @@ ignore warning as props will resolve at runtime
 
 class Message(db.Model):
     id = db.Column(db.Text(80), primary_key=True)
-    name = db.Column(db.String(80), unique=False, nullable=False)
+    # name = db.Column(db.String(80), unique=False, nullable=False)
     content = db.Column(db.String(120), unique=True, nullable=False)
 
     def __repr__(self):
         return '<Message %r>' % self.content
 
 
+list = []
+dict1 = {1: 'test test test'}
+dict2 = {2: 'loop loop loop'}
+list.append(dict1)
+list.append(dict2)
+
+
 def create_message(data):
     # id = str(uuid.uuid4())
     # static variable, not a uuid
-    name = data.get('name')
+    # id = str(num.counter)
+    # {num(true): 'message'}
+    # name = data.get('name')
     content = data.get('content')
-    message = Message(id=id, name=name, content=content)
+    message = Message(id=id, content=content)
     db.session.add(message)
     db.session.commit()
+    list.append(content)
     return message
+
+
 
 
 '''
@@ -64,24 +82,26 @@ API controllers
 '''
 
 
-@api.route("/message")
-class MessageRoute(Resource):
-    def get(self):
-        return {'brandon': 'listens to selena gomez'}
+class MessageBoard(Resource):
+    @api.route("/messageboard/<int:id>")
+    def get(self, id):
+        return list[id]
 
     # @api.response(201, 'Rumor successfully created.')
     @api.expect(message)
-    @api.marshal_with(message_id)
+    # @api.marshal_with(message_id)
     def post(self):
-        new_message = create_message(request.json)
-        return Message.query.filter(Message.id == new_message.id).one()
+        create_message(request.json)
+        # new_message = create_message(request.json)
+        # return Message.query.filter(Message.id == new_message.id).one()
 
 
 # id is a url-encoded variable
-@api.route("/message/<string:id>")
-class MessageIdRoute(Resource):
-    @api.marshal_with(message_id)
+
+class MessageId(Resource):
+    # @api.marshal_with(message_id)
     # id becomes a method param in this GET
+    @api.route("/messageboard/<string:id>")
     def get(self, id):
         # use sqlalchemy to get a rumor by ID
         return Message.query.filter(Message.id == id).one()
