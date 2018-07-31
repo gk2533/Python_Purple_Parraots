@@ -4,7 +4,7 @@ from flask_restplus import Resource, Api
 from flask_restplus import fields
 from flask_sqlalchemy import SQLAlchemy
 
-# simple flas k application definition stupid
+# simple flask application definition stupid
 application = Flask(__name__)
 api = Api(application)
 application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
@@ -24,6 +24,11 @@ message_id = api.model('message_id', {
     'content': fields.String(required=True, description='message content'),
 })
 
+def num():
+    num.counter += 1
+    return num.counter
+
+num.counter = 0
 
 '''
 Rumor object model (Rumor <-> rumor) 
