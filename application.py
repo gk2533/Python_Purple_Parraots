@@ -4,7 +4,7 @@ from flask_restplus import Resource, Api
 from flask_restplus import fields
 from flask_sqlalchemy import SQLAlchemy
 
-# simple flask application definition
+# simple flask application definition stupid
 application = Flask(__name__)
 api = Api(application)
 application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
