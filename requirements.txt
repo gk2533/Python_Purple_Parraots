@@ -1,5 +1,4 @@
 flask
 flask_restplus
-flask_SQLAlchemy
+flask_sqlalchemy
 fields
-nltk
