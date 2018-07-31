@@ -3,6 +3,8 @@ from flask import Flask, request, jsonify
 from flask_restplus import Resource, Api
 from flask_restplus import fields
 from flask_sqlalchemy import SQLAlchemy
+import re
+import nltk
 
 # welcome to flask: http://flask.pocoo.org/
 # working with sqlalchemy & swagger:
@@ -101,6 +103,7 @@ def main():
     configure_db()
     application.debug = True
     application.run()
+
 
 
 if __name__ == "__main__":
