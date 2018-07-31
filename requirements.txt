@@ -1,2 +1,4 @@
 flask
-flask_restplus 
+flask_restplus
+flask_SQLAlchemy
+fields
