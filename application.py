@@ -24,7 +24,7 @@ message_id = api.model('message_id', {
 })
 
 
-def num(bool):
+'''def num(bool):
     i = 0
     if bool:
         num.counter += 1
@@ -34,9 +34,7 @@ def num(bool):
 
 
 num.counter = 1
-
-
-list = []
+'''
 
 
 class Message(db.Model):
@@ -49,6 +47,9 @@ def __repr__(self):
     return '<Message %r>' % self.content
 
 
+list = []
+
+
 def create_message(data):
     id = str(uuid.uuid4())
     # static variable, not a uuid
@@ -57,19 +58,18 @@ def create_message(data):
     # name = data.get('name')
     content = data.get('content')
     message = Message(id=id, content=content)
-    # dict1 = {num(True): content}
-    # list.append(dict1)
+    # dict1 = {id: content}
+    list.append(content)
     db.session.add(message)
     db.session.commit()
-    list.append(content)
+    # list.append(content)
     return message
 
 
 @api.route("/message")
 class MessageBoard(Resource):
-    @api.expect(message)
     def get(self):      # @api.route("/<int:id>")
-        return message
+        return list
 
 # this works, don't change post method
     @api.expect(message)
