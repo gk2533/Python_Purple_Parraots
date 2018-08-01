@@ -41,8 +41,8 @@ list = []
 
 class Message(db.Model):
     id = db.Column(db.Text(80), primary_key=True)
-    # name = db.Column(db.String(80), unique=False, nullable=False)
     content = db.Column(db.String(120), unique=True, nullable=False)
+    # name = db.Column(db.String(80), unique=False, nullable=False)
 
 
 def __repr__(self):
@@ -57,9 +57,8 @@ def create_message(data):
     # name = data.get('name')
     content = data.get('content')
     message = Message(id=id, content=content)
-    # do we need this?
-    dict1 = {num(True): content}
-    list.append(dict1)
+    # dict1 = {num(True): content}
+    # list.append(dict1)
     db.session.add(message)
     db.session.commit()
     list.append(content)
@@ -68,25 +67,23 @@ def create_message(data):
 
 @api.route("/message")
 class MessageBoard(Resource):
-    # @api.route("/<int:id>")
-    def get(self, id):
-        return list[id]
+    @api.expect(message)
+    def get(self):      # @api.route("/<int:id>")
+        return message
 
-    # @api.response(201, 'Rumor successfully created.')
+# this works, don't change post method
     @api.expect(message)
     @api.marshal_with(message_id)
     def post(self):
-        # create_message(request.json)
         new_message = create_message(request.json)
         return Message.query.filter(Message.id == new_message.id).one()
 
 
-@api.route("/message/<int:id>")
+# must leave <int:id>
+@api.route("/message/<string:id>")
 class MessageId(Resource):
-    # id becomes a method param in this GET
-    # @api.marshal_with(message_id)
+    @api.marshal_with(message_id)
     def get(self, id):
-        # use sqlalchemy to get a rumor by ID
         return Message.query.filter(Message.id == id).one()
 
 
