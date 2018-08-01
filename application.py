@@ -3,6 +3,7 @@ from flask import Flask, request, jsonify
 from flask_restplus import Resource, Api
 from flask_restplus import fields
 from flask_sqlalchemy import SQLAlchemy
+import nltk
 
 # simple flask application definition stupid
 application = Flask(__name__)
@@ -30,6 +31,16 @@ def num():
 
 num.counter = 0
 
+
+def yodify(s):
+   s = nltk.word_tokenize(s)
+   b = nltk.pos_tag(s)
+   l = len(b)
+   return b[l:l-3]+ b[:l-3]
+
+
+s = "the dog ate the food bowl"
+print(yodify(s))
 '''
 Rumor object model (Rumor <-> rumor) 
 ignore warning as props will resolve at runtime
@@ -103,6 +114,8 @@ def main():
     configure_db()
     application.debug = True
     application.run()
+
+
 
 
 if __name__ == "__main__":
