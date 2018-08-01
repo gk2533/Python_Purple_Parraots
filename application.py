@@ -80,7 +80,7 @@ class MessageBoard(Resource):
 
 
 # must leave <int:id>
-@api.route("/message/<int:id>")
+@api.route("/message/<string:id>")
 class MessageId(Resource):
     @api.marshal_with(message_id)
     def get(self, id):
