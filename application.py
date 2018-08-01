@@ -1,10 +1,11 @@
 # import uuid
 from flask import Flask, request, jsonify
 from flask_restplus import Resource, Api
-from flask_restplus import fields
 from flask_sqlalchemy import SQLAlchemy
+import nltk
+import fields
 
-# simple flask application definition stupid
+# simple flask application definition
 application = Flask(__name__)
 api = Api(application)
 application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
@@ -21,10 +22,44 @@ message = api.model('message', {
 '''
 message_id = api.model('message_id', {
     'id': fields.String(readOnly=True, description='unique identifier of a message'),
-    # 'name': fields.String(required=True, description='message name'),
+    'name': fields.String(required=True, description='message name'),
     'content': fields.String(required=True, description='message content'),
 })
 '''
+
+
+def dog(sentence):
+    tokens = nltk.word_tokenize(sentence)
+    i = 1
+    str = ''
+    while i < tokens.length():
+        str += 'woof '
+        i += 1
+    return str
+
+
+def cookie(sentence):
+    tokens = nltk.word_tokenize(sentence)
+    i = 2
+    letter = 0
+    str = ''
+    while i < tokens.length():
+        str += tokens[letter] + " cookie "
+        tokens.insert(' cookie ', i)
+    return str
+
+
+def kermit(sentence):
+    tokens = nltk.word_tokenize(sentence)
+    str = ''
+    for index in tokens:
+        if index == 'commit':
+            str += 'kermit '
+        elif index == 'Commit':
+            str += 'Kermit '
+        else:
+            str += index + ' '
+        return str
 
 
 def num(bool):
@@ -42,6 +77,15 @@ num.counter = 1
 list = []
 
 
+def yodify(s):
+    s = nltk.word_tokenize(s)
+    b = nltk.pos_tag(s)
+    l = len(b)
+    return b[l:l-3] + b[:l-3]
+
+
+s = "the dog ate the food bowl"
+print(yodify(s))
 '''
 Rumor object model (Rumor <-> rumor) 
 ignore warning as props will resolve at runtime
@@ -74,30 +118,28 @@ def create_message(data):
     return message
 
 
+'''
+API controllers
+'''
 
-class MessageBoard(Resource):
-    @api.route("/message/<int:id>")
-    def get(self, id):
-        return list[id]
+
+@api.route("/message")
+class MessageRoute(Resource):
+    def get(self):
+        return list
 
     # @api.response(201, 'Rumor successfully created.')
     @api.expect(message)
-    # @api.marshal_with(message_id)
     def post(self):
-        create_message(request.json)
-        # new_message = create_message(request.json)
-        # return Message.query.filter(Message.id == new_message.id).one()
+        create_message(yodify(request.json))
 
 
 # id is a url-encoded variable
-
-class MessageId(Resource):
-    # @api.marshal_with(message_id)
-    # id becomes a method param in this GET
-    @api.route("/message/<int:id>")
+@api.route("/message/<int:id>")
+class MessageIdRoute(Resource):
     def get(self, id):
-        # use sqlalchemy to get a rumor by ID
-        return Message.query.filter(Message.id == id).one()
+        # get a message by ID
+        return list[id]
 
 
 '''
