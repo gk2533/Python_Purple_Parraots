@@ -31,18 +31,6 @@ message = api.model('message', {
     'content': fields.String(required=True, description='message content'),
 })
 
-h = nltk.word_tokenize('content')
-b = nltk.pos_tag(h)
-for item in b:
-    if item[1] == 'PP':
-        word = re.search(item[0], 'content')
-        num = word.start()
-        yoda_message = str('content'[num:] + " " + 'content'[:num])
-    elif len(b) <= 4:
-        yoda_message = str(' '.join(h[-1:] + h[:len(b) - 1]))
-    else:
-        yoda_message = str(' '.join(h[-3:] + h[:-3]))
-
 
 message_id = api.model('message_id', {
     'id': fields.String(readOnly=True, description='unique identifier of a message'),
@@ -74,7 +62,7 @@ def __repr__(self):
     return '<Message %r>' % self.content
 
 
-'''def yodify(s):
+def yodify(s):
     h = nltk.word_tokenize(s)
     b = nltk.pos_tag(h)
     for item in b:
@@ -86,7 +74,7 @@ def __repr__(self):
             return str(' '.join(h[-1:] + h[:len(b)-1]))
         else:
             return str(' '.join(h[-3:] + h[:-3]))
-'''
+
 
 message_list = []
 
@@ -101,7 +89,7 @@ def create_message(data):
     return message
 
 
-@api.route("/message")
+@api.route("/message/yodi")
 class MessageBoard(Resource):
     def get(self):      # @api.route("/<int:id>")
         return message_list
@@ -110,7 +98,8 @@ class MessageBoard(Resource):
     @api.expect(message)
     @api.marshal_with(message_id)
     def post(self):
-        new_message = create_message(request.json)
+        result = {'content': yodify(request.get_json().get('content'))}
+        new_message = create_message(result)
         return Message.query.filter(Message.id == new_message.id).one()
 
 
