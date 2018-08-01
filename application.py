@@ -40,12 +40,12 @@ def dog(sentence):
 
 def cookie(sentence):
     tokens = nltk.word_tokenize(sentence)
-    i = 2
-    letter = 0
     str = ''
-    while i < tokens.length():
-        str += tokens[letter] + " cookie "
-        tokens.insert(' cookie ', i)
+    for word in tokens:
+        if word == 'my' or word == 'I' or word == 'My':
+            str += 'me cookie '
+        else:
+            str += word + ' cookie '
     return str
 
 
