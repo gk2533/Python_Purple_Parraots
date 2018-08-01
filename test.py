@@ -12,20 +12,31 @@ def yodify(s):
    # return b[-2]+ b[-1] + tuple(b[l:l-3]+ b[:l-3])
    # print(b)
    for item in b:
-       for tag in item:
-           print(tag)
-           if(tag == 'CC'):
-             return b[int(item-1)] + b[int(item)]+ b[int(item+1)] + b[:int(item)-1]
+       if item[1]== 'IN' :
+           word = re.search(item[0],s)
+           # print(word.start())
+           num = word.start()
+           return s[num:]+ " " +s[:num]
+       if item[1] == 'CC':
+            word_ = re.search(item[0],s)
+            n = word_.start()
 
+
+
+           # if(tag == 'IN'):
+           #   return b[-3]+ b[-2] +b[-1] + tuple(b[l:l-3]+ b[:l-3])
+           # else:
+           #     return b[-2] + b[-1] + tuple(b[l:l - 3] + b[:l - 3])
 
 
 
 s= "the dog ate the food bowl"
 y = "I like to go to the beach"
 i = "He spoke to Beck and Evan"
+j = "the dog is in the house"
 
 
 
 print(yodify(s))
 print(yodify(y))
-print(yodify(i))
+print(yodify(j))
