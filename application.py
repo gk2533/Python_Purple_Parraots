@@ -1,4 +1,4 @@
-# import uuid
+import uuid
 from flask import Flask, request, jsonify
 from flask_restplus import Resource, Api
 from flask_restplus import fields
@@ -50,7 +50,7 @@ def __repr__(self):
 
 
 def create_message(data):
-    # id = str(uuid.uuid4())
+    id = str(uuid.uuid4())
     # static variable, not a uuid
     # id = str(num.counter)
     # {num(true): 'message'}
@@ -74,17 +74,17 @@ class MessageBoard(Resource):
 
     # @api.response(201, 'Rumor successfully created.')
     @api.expect(message)
-    # @api.marshal_with(message_id)
+    @api.marshal_with(message_id)
     def post(self):
-        create_message(request.json)
-        # new_message = create_message(request.json)
-        # return Message.query.filter(Message.id == new_message.id).one()
+        # create_message(request.json)
+        new_message = create_message(request.json)
+        return Message.query.filter(Message.id == new_message.id).one()
 
 
 @api.route("/message/<int:id>")
 class MessageId(Resource):
-    # @api.marshal_with(message_id)
     # id becomes a method param in this GET
+    # @api.marshal_with(message_id)
     def get(self, id):
         # use sqlalchemy to get a rumor by ID
         return Message.query.filter(Message.id == id).one()
