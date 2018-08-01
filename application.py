@@ -27,7 +27,7 @@ message_id = api.model('message_id', {
 '''
 
 
-'''def num(bool):
+def num(bool):
     i = 0
     if bool:
         num.counter += 1
@@ -37,7 +37,10 @@ message_id = api.model('message_id', {
 
 
 num.counter = 1
-'''
+
+
+list = []
+
 
 '''
 Rumor object model (Rumor <-> rumor) 
@@ -54,13 +57,6 @@ class Message(db.Model):
         return '<Message %r>' % self.content
 
 
-list = []
-dict1 = {1: 'test test test'}
-dict2 = {2: 'loop loop loop'}
-list.append(dict1)
-list.append(dict2)
-
-
 def create_message(data):
     # id = str(uuid.uuid4())
     # static variable, not a uuid
@@ -69,6 +65,9 @@ def create_message(data):
     # name = data.get('name')
     content = data.get('content')
     message = Message(id=id, content=content)
+    # do we need this?
+    dict1 = {num(True): content}
+    list.append(dict1)
     db.session.add(message)
     db.session.commit()
     list.append(content)
@@ -76,14 +75,8 @@ def create_message(data):
 
 
 
-
-'''
-API controllers
-'''
-
-
 class MessageBoard(Resource):
-    @api.route("/messageboard/<int:id>")
+    @api.route("/message/<int:id>")
     def get(self, id):
         return list[id]
 
@@ -101,7 +94,7 @@ class MessageBoard(Resource):
 class MessageId(Resource):
     # @api.marshal_with(message_id)
     # id becomes a method param in this GET
-    @api.route("/messageboard/<string:id>")
+    @api.route("/message/<int:id>")
     def get(self, id):
         # use sqlalchemy to get a rumor by ID
         return Message.query.filter(Message.id == id).one()
