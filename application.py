@@ -71,17 +71,17 @@ class MessageBoard(Resource):
     def get(self):      # @api.route("/<int:id>")
         return message
 
+# this works, don't change post method
     @api.expect(message)
     @api.marshal_with(message_id)
     def post(self):
-        # new_message = create_message(request.json)
-        return create_message(request.json)
-        # return Message.query.filter(Message.id == new_message.id).one()
+        new_message = create_message(request.json)
+        return Message.query.filter(Message.id == new_message.id).one()
 
 
+# must leave <int:id>
 @api.route("/message/<int:id>")
 class MessageId(Resource):
-    # @api.expect(message)
     @api.marshal_with(message_id)
     def get(self, id):
         return Message.query.filter(Message.id == id).one()
