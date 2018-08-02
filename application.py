@@ -70,7 +70,7 @@ def yodify(s):
 
 def dog(sentence):
     tokens = nltk.word_tokenize(sentence)
-    i = 1
+    i = 0
     str = ''
     while i < tokens.length():
         str += 'woof '
