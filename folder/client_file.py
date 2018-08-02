@@ -5,8 +5,8 @@ import json
 class Client_Class:
     def __init__(self):
         return
-    @staticmethod
 
+    @staticmethod
     def get_client():
         j = requests.get('http://pythonredjaguars-env.hx2tdpc8dz.us-east-2.elasticbeanstalk.com/api/recipe/Roasted Asparagus')
         h = requests.get('http://pythonredjaguars-env.hx2tdpc8dz.us-east-2.elasticbeanstalk.com/api/recipe/Big Night Pizza')
@@ -17,4 +17,4 @@ class Client_Class:
         print(h)
         print(j)
         print(r)
-        return h,j,r
+        return h, j, r
