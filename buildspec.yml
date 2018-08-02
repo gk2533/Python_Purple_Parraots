@@ -7,7 +7,6 @@ phases:
       - pip install -r requirements.txt
   post_build:
     commands:
-      - mkdir -p /home/wsgi/nltk_data
       - echo Build completed on `date`
 artifacts:
   files:
@@ -16,3 +15,4 @@ artifacts:
     - english.pickle
     - averaged_perceptron_tagger.pickle
     - db.sqlite
+    - home/wsgi/data/test.txt
