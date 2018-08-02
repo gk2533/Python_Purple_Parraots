@@ -21,10 +21,7 @@ nltk.download('averaged_perceptron_tagger', download_dir='/opt/python/current/ap
 
 nltk.data.path.append("/opt/python/current/app")
 
-# nltk.nltk_data.load('english.pickle')
-# nltk.nltk_data.load('averaged_perceptron_tagger.pickle')
 
-# simple flask application definition stupid
 application = Flask(__name__)
 api = Api(application)
 application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
@@ -118,6 +115,8 @@ def british(sentence):
             str += 'queue '
         else:
             str += index + ' '
+
+        str += 'mate'
     return str
 
 
