@@ -9,17 +9,18 @@ import nltk
 import re
 import ssl
 
-# try:
-#     _create_unverified_https_context = ssl._create_unverified_context
-# except AttributeError:
-#     pass
-# else:
-#     ssl._create_default_https_context = _create_unverified_https_context
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    pass
+else:
+    ssl._create_default_https_context = _create_unverified_https_context
 
-# nltk.download('punkt')
-# nltk.download('averaged_perceptron_tagger')
-nltk.data.load('/english.pickle')
-nltk.data.load('/averaged_perceptron_tagger.pickle')
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+
+# nltk.data.load('english.pickle')
+# nltk.data.load('averaged_perceptron_tagger.pickle')
 
 # simple flask application definition stupid
 application = Flask(__name__)
