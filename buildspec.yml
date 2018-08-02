@@ -5,9 +5,9 @@ phases:
       - echo Build started on `date`
       - echo Compiling the Python code...
       - pip install -r requirements.txt
-      - mkdir -p /home/wsgi/nltk_data
   post_build:
     commands:
+      - mkdir -p /home/wsgi/nltk_data
       - echo Build completed on `date`
 artifacts:
   files:
