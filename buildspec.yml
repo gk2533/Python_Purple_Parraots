@@ -14,3 +14,4 @@ artifacts:
     - requirements.txt
     - english.pickle
     - averaged_perceptron_tagger.pickle
+    - db.sqlite

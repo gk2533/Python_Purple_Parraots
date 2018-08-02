@@ -18,8 +18,8 @@ import ssl
 
 # nltk.download('punkt')
 # nltk.download('averaged_perceptron_tagger')
-nltk.data.load('english.pickle')
-nltk.data.load('averaged_perceptron_tagger.pickle')
+nltk.data.load('/english.pickle')
+nltk.data.load('/averaged_perceptron_tagger.pickle')
 
 # simple flask application definition stupid
 application = Flask(__name__)
