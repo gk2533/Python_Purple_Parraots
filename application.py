@@ -29,13 +29,13 @@ db = SQLAlchemy(application)
 
 
 message = api.model('message', {
-    'content': fields.String(required=True, description='message content'),
+    'post a message here': fields.String(required=True, description='message post a message here'),
 })
 
 
 message_id = api.model('message_id', {
     'id': fields.String(readOnly=True, description='unique identifier of a message'),
-    'content': fields.String(required=True, description='message content'),
+    'post a message here': fields.String(required=True, description='message post a message here'),
 })
 
 
@@ -124,7 +124,7 @@ message_list = []  # creates a list, and later this list will have all the messa
 
 def create_message(data):  # this creates the messages, this method is called in the post method
     id = str(uuid.uuid4())
-    content = data.get('content')
+    content = data.get('post a message here')
     message = Message(id=id, content=content)
     message_list.append(content)
     db.session.add(message)
@@ -143,7 +143,7 @@ class YodaMessage(Resource):    # this is the yoda post class
     @api.expect(message)
     @api.marshal_with(message_id)
     def post(self): # this post method posts a message with yodify, calls create_message method
-        result = {'content': yodify(request.get_json().get('content'))}
+        result = {'post a message here': yodify(request.get_json().get('post a message here'))}
         new_message = create_message(result)
         return Message.query.filter(Message.id == new_message.id).one()
 
@@ -153,7 +153,7 @@ class DogMessage(Resource):     # this is the dog post class
     @api.expect(message)
     @api.marshal_with(message_id)
     def post(self): # this post method posts a message with dog
-        result = {'content': dog(request.get_json().get('content'))}
+        result = {'post a message here': dog(request.get_json().get('post a message here'))}
         new_message = create_message(result)
         return Message.query.filter(Message.id == new_message.id).one()
 
@@ -163,7 +163,7 @@ class CookieMessage(Resource):      # this is the cookie post class
     @api.expect(message)
     @api.marshal_with(message_id)
     def post(self):     # this post method posts a message with cookie
-        result = {'content': cookie(request.get_json().get('content'))}
+        result = {'post a message here': cookie(request.get_json().get('post a message here'))}
         new_message = create_message(result)
         return Message.query.filter(Message.id == new_message.id).one()
 
@@ -173,7 +173,7 @@ class KermitMessage(Resource):      # this is the kermit post class
     @api.expect(message)
     @api.marshal_with(message_id)
     def post(self):     # this post method posts a message with kermit
-        result = {'content': kermit(request.get_json().get('content'))}
+        result = {'post a message here': kermit(request.get_json().get('post a message here'))}
         new_message = create_message(result)
         return Message.query.filter(Message.id == new_message.id).one()
 
@@ -183,7 +183,7 @@ class BritishMessage(Resource):
     @api.expect(message)
     @api.marshal_with(message_id)
     def post(self):     # this post method posts a message with british
-        result = {'content': british(request.get_json().get('content'))}
+        result = {'post a message here': british(request.get_json().get('post a message here'))}
         new_message = create_message(result)
         return Message.query.filter(Message.id == new_message.id).one()
 
