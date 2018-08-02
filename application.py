@@ -15,7 +15,7 @@ except AttributeError:
   pass
 else:
    ssl._create_default_https_context = _create_unverified_https_context
-
+#Downloading nessecary tools for nltk
 nltk.download('punkt', download_dir='/opt/python/current/app')
 nltk.download('averaged_perceptron_tagger', download_dir='/opt/python/current/app')
 
@@ -29,14 +29,12 @@ db = SQLAlchemy(application)
 
 
 message = api.model('message', {
-    # 'name': fields.String(required=True, description='message title'),
     'content': fields.String(required=True, description='message content'),
 })
 
 
 message_id = api.model('message_id', {
     'id': fields.String(readOnly=True, description='unique identifier of a message'),
-    # 'name': fields.String(required=True, description='message name'),
     'content': fields.String(required=True, description='message content'),
 })
 
@@ -44,28 +42,29 @@ message_id = api.model('message_id', {
 class Message(db.Model):
     id = db.Column(db.Text(80), primary_key=True)
     content = db.Column(db.String(120), unique=False, nullable=False)
-    # name = db.Column(db.String(80), unique=False, nullable=False)
 
 
 def __repr__(self):
     return '<Message %r>' % self.content
 
 
-def yodify(s):
-    h = nltk.word_tokenize(s)
-    b = nltk.pos_tag(h)
-    for item in b:
-        if item[1] == 'PP':
+def yodify(s):  # takes in a string/sentence
+    h = nltk.word_tokenize(s)  # converting every word in the sentence into list
+    b = nltk.pos_tag(h)  # tagging every word in list with what type of word it is ( noun, verb,etc.)
+    # b is a list of tupples. the tupples are in the format of ( "word", "tag")
+    for item in b:  # going through each tupple in the list
+        if item[1] == 'PP':  # searching if any word is tagged as a preposition( PP)
             word = re.search(item[0], s)
             num = word.start()
             return str(s[num:] + " " + s[:num])
-        if len(b) <= 4:
+        if len(b) <= 4:  # for sentences that have 4 or less words
             return str(' '.join(h[-1:] + h[:len(b)-1]))
         else:
-            return str(' '.join(h[-3:] + h[:-3]))
+            return str(' '.join(h[-3:] + h[:-3]))  # if sentence bigger than 4
+            # words has no prep, return the last 3 words in front of the sentence
 
 
-def dog(sentence):
+def dog(sentence):  # changes all the words in the sentence to "woof"
     tokens = nltk.word_tokenize(sentence)
     i = 0
     str = ''
@@ -75,7 +74,7 @@ def dog(sentence):
     return str
 
 
-def cookie(sentence):
+def cookie(sentence):  # all "my"s and "I"s and "My"s change to "me" and "cookie" is inserted every other word
     tokens = nltk.word_tokenize(sentence)
     str = ''
     for word in tokens:
@@ -86,7 +85,7 @@ def cookie(sentence):
     return str
 
 
-def kermit(sentence):
+def kermit(sentence):  # all instances of the word "commit" and turns to "kermit" and "Commit" to "Kermit"
     tokens = nltk.word_tokenize(sentence)
     str = ''
     for word in tokens:
@@ -99,7 +98,7 @@ def kermit(sentence):
     return str
 
 
-def british(sentence):
+def british(sentence):  # talking like Daniel
     tokens = nltk.word_tokenize(sentence)
     str = ''
     for index in tokens:
@@ -120,10 +119,10 @@ def british(sentence):
     return str
 
 
-message_list = []
+message_list = []  # creates a list, and later this list will have all the messages in it
 
 
-def create_message(data):
+def create_message(data):  # this creates the messages, this method is called in the post method
     id = str(uuid.uuid4())
     content = data.get('content')
     message = Message(id=id, content=content)
@@ -133,68 +132,62 @@ def create_message(data):
     return message
 
 
-@api.route("/messageboard")
+@api.route("/messageboard") # this get class returns all the messages
 class MessageBoard(Resource):
     def get(self):
         return message_list
 
 
 @api.route("/message/yoda")
-class YodaMessage(Resource):
-    # this works, don't change post method
+class YodaMessage(Resource):    # this is the yoda post class
     @api.expect(message)
     @api.marshal_with(message_id)
-    def post(self):
+    def post(self): # this post method posts a message with yodify, calls create_message method
         result = {'content': yodify(request.get_json().get('content'))}
         new_message = create_message(result)
         return Message.query.filter(Message.id == new_message.id).one()
 
 
 @api.route("/message/dog")
-class DogMessage(Resource):
-    # this works, don't change post method
+class DogMessage(Resource):     # this is the dog post class
     @api.expect(message)
     @api.marshal_with(message_id)
-    def post(self):
+    def post(self): # this post method posts a message with dog
         result = {'content': dog(request.get_json().get('content'))}
         new_message = create_message(result)
         return Message.query.filter(Message.id == new_message.id).one()
 
 
 @api.route("/message/cookie")
-class CookieMessage(Resource):
-    # this works, don't change post method
+class CookieMessage(Resource):      # this is the cookie post class
     @api.expect(message)
     @api.marshal_with(message_id)
-    def post(self):
+    def post(self):     # this post method posts a message with cookie
         result = {'content': cookie(request.get_json().get('content'))}
         new_message = create_message(result)
         return Message.query.filter(Message.id == new_message.id).one()
 
 
 @api.route("/message/kermit")
-class KermitMessage(Resource):
-    # this works, don't change post method
+class KermitMessage(Resource):      # this is the kermit post class
     @api.expect(message)
     @api.marshal_with(message_id)
-    def post(self):
+    def post(self):     # this post method posts a message with kermit
         result = {'content': kermit(request.get_json().get('content'))}
         new_message = create_message(result)
         return Message.query.filter(Message.id == new_message.id).one()
 
 
-@api.route("/message/british")
+@api.route("/message/british")      # this is the british post class
 class BritishMessage(Resource):
-    # this works, don't change post method
     @api.expect(message)
     @api.marshal_with(message_id)
-    def post(self):
+    def post(self):     # this post method posts a message with british
         result = {'content': british(request.get_json().get('content'))}
         new_message = create_message(result)
         return Message.query.filter(Message.id == new_message.id).one()
 
 
-# must leave <int:id>
 @api.route("/message/<string:id>")
 class MessageId(Resource):
     @api.marshal_with(message_id)
