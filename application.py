@@ -19,6 +19,8 @@ else:
 nltk.download('punkt', download_dir='/opt/python/current/app')
 nltk.download('averaged_perceptron_tagger', download_dir='/opt/python/current/app')
 
+nltk.data.path.append("/opt/python/current/app")
+
 # nltk.nltk_data.load('english.pickle')
 # nltk.nltk_data.load('averaged_perceptron_tagger.pickle')
 
