@@ -12,9 +12,9 @@ import ssl
 try:
     _create_unverified_https_context = ssl._create_unverified_context
 except AttributeError:
-    pass
+  pass
 else:
-    ssl._create_default_https_context = _create_unverified_https_context
+   ssl._create_default_https_context = _create_unverified_https_context
 
 nltk.download('punkt', download_dir='/opt/python/current/app')
 nltk.download('averaged_perceptron_tagger', download_dir='/opt/python/current/app')
@@ -69,7 +69,7 @@ def dog(sentence):
     tokens = nltk.word_tokenize(sentence)
     i = 0
     str = ''
-    while i < tokens.length():
+    while i < len(tokens):
         str += 'woof '
         i += 1
     return str
@@ -89,14 +89,14 @@ def cookie(sentence):
 def kermit(sentence):
     tokens = nltk.word_tokenize(sentence)
     str = ''
-    for index in tokens:
-        if index == 'commit':
+    for word in tokens:
+        if word == 'commit':
             str += 'kermit '
-        elif index == 'Commit':
+        elif word == 'Commit':
             str += 'Kermit '
         else:
-            str += index + ' '
-        return str
+            str += word + ' '
+    return str
 
 
 def british(sentence):
@@ -110,13 +110,13 @@ def british(sentence):
         elif index == 'labor ':
             str += 'labour '
         elif index == 'tv':
-            str += 'tele '
+            str += 'telly '
         elif index == 'line':
             str += 'queue '
         else:
             str += index + ' '
 
-        str += 'mate'
+    str += 'mate'
     return str
 
 
