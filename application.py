@@ -44,19 +44,6 @@ message_id = api.model('message_id', {
 })
 
 
-'''def num(bool):
-    i = 0
-    if bool:
-        num.counter += 1
-    if not bool:
-        i += 1
-    return num.counter
-
-
-num.counter = 1
-'''
-
-
 class Message(db.Model):
     id = db.Column(db.Text(80), primary_key=True)
     content = db.Column(db.String(120), unique=False, nullable=False)
@@ -81,6 +68,59 @@ def yodify(s):
             return str(' '.join(h[-3:] + h[:-3]))
 
 
+def dog(sentence):
+    tokens = nltk.word_tokenize(sentence)
+    i = 1
+    str = ''
+    while i < tokens.length():
+        str += 'woof '
+        i += 1
+    return str
+
+
+def cookie(sentence):
+    tokens = nltk.word_tokenize(sentence)
+    str = ''
+    for word in tokens:
+        if word == 'my' or word == 'I' or word == 'My':
+            str += 'me cookie '
+        else:
+            str += word + ' cookie '
+    return str
+
+
+def kermit(sentence):
+    tokens = nltk.word_tokenize(sentence)
+    str = ''
+    for index in tokens:
+        if index == 'commit':
+            str += 'kermit '
+        elif index == 'Commit':
+            str += 'Kermit '
+        else:
+            str += index + ' '
+        return str
+
+
+def british(sentence):
+    tokens = nltk.word_tokenize(sentence)
+    str = ''
+    for index in tokens:
+        if index == 'color':
+            str += 'colour '
+        elif index == 'favorite':
+            str += 'favourite '
+        elif index == 'labor ':
+            str += 'labour '
+        elif index == 'tv':
+            str += 'tele '
+        elif index == 'line':
+            str += 'queue '
+        else:
+            str += index + ' '
+    return str
+
+
 message_list = []
 
 
@@ -94,16 +134,63 @@ def create_message(data):
     return message
 
 
-@api.route("/message/yodi")
+@api.route("/messageboard")
 class MessageBoard(Resource):
-    def get(self):      # @api.route("/<int:id>")
+    def get(self):
         return message_list
 
-# this works, don't change post method
+
+@api.route("/message/yoda")
+class YodaMessage(Resource):
+    # this works, don't change post method
     @api.expect(message)
     @api.marshal_with(message_id)
     def post(self):
         result = {'content': yodify(request.get_json().get('content'))}
+        new_message = create_message(result)
+        return Message.query.filter(Message.id == new_message.id).one()
+
+
+@api.route("/message/dog")
+class DogMessage(Resource):
+    # this works, don't change post method
+    @api.expect(message)
+    @api.marshal_with(message_id)
+    def post(self):
+        result = {'content': dog(request.get_json().get('content'))}
+        new_message = create_message(result)
+        return Message.query.filter(Message.id == new_message.id).one()
+
+
+@api.route("/message/cookie")
+class CookieMessage(Resource):
+    # this works, don't change post method
+    @api.expect(message)
+    @api.marshal_with(message_id)
+    def post(self):
+        result = {'content': cookie(request.get_json().get('content'))}
+        new_message = create_message(result)
+        return Message.query.filter(Message.id == new_message.id).one()
+
+
+@api.route("/message/kermit")
+class KermitMessage(Resource):
+    # this works, don't change post method
+    @api.expect(message)
+    @api.marshal_with(message_id)
+    def post(self):
+        result = {'content': kermit(request.get_json().get('content'))}
+        new_message = create_message(result)
+        return Message.query.filter(Message.id == new_message.id).one()
+
+
+@api.route("/message/british")
+class BritishMessage(Resource):
+    # this works, don't change post method
+    @api.expect(message)
+    @api.marshal_with(message_id)
+    def post(self):
+        result = {'content': british(request.get_json().get('content'))}
         new_message = create_message(result)
         return Message.query.filter(Message.id == new_message.id).one()
 
