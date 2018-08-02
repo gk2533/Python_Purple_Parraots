@@ -15,4 +15,3 @@ artifacts:
     - english.pickle
     - averaged_perceptron_tagger.pickle
     - db.sqlite
-    - home/wsgi/nltk_data/test.txt

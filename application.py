@@ -16,8 +16,8 @@ except AttributeError:
 else:
     ssl._create_default_https_context = _create_unverified_https_context
 
-nltk.download('punkt')
-nltk.download('averaged_perceptron_tagger')
+nltk.download('punkt', download_dir='/opt/python/current/app')
+nltk.download('averaged_perceptron_tagger', download_dir='/opt/python/current/app')
 
 # nltk.nltk_data.load('english.pickle')
 # nltk.nltk_data.load('averaged_perceptron_tagger.pickle')
