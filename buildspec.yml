@@ -12,3 +12,5 @@ artifacts:
   files:
     - application.py
     - requirements.txt
+    - english.pickle
+    - averaged_perceptron_tagger.pickle
